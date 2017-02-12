@@ -1,3 +1,4 @@
+"use strict";
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
@@ -8,7 +9,7 @@ app.get('/', function(req, res){
 
 var rooms = ['r1', 'r2', 'r3', 'r4', 'r5', 'r6', 'r7', 'r8', 'r9', 'r10'];
 var full = false;
-users = [];
+var users = [];
 io.on('connection', function(socket){
     var currRoom;
     var currName;

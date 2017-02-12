@@ -6,13 +6,20 @@
 </head>
 <script src="/socket.io/socket.io.js"></script>
 <script>
+    "use strict";
     var socket = io();
-    //Called when current user enteres username; go to server end
-    function setUsername(){
-        socket.emit('setUsername', document.getElementById('name').value);
-    };
     var user;
     var roomno;
+    //Called when current user enteres username; go to server end
+    function setUsername(){
+        var name = document.getElementById('name').value;
+        if(name){
+            socket.emit('setUsername', name);
+        }else{
+            document.getElementById('error-container').innerHTML = '<div>Please enter a username</div>';
+        }
+    };
+
     //error if user exists already
     socket.on('userExists', function(data){
         document.getElementById('error-container').innerHTML = data;
@@ -22,7 +29,6 @@
     socket.on('fullRooms', function(data){
         document.getElementById('error-container').innerHTML = data;
     });
-
 
     //set current user to username, then change display to chat room
     socket.on('userSet', function(data){
@@ -36,7 +42,6 @@
 
     //gets called when user prompts to send a message; takes message and user who said it, and outputs to server-side
     function sendMessage(){
-
         var msg = document.getElementById('message').value;
         if (msg){
             socket.emit('msg', {message: msg, user: user});
@@ -58,13 +63,6 @@
     socket.on('greetings', function(data){
         document.getElementById('message-container').innerHTML += '<br>' + data;
     });
-
-
-
-
-
-
-
 
 
     /*ROOMS
