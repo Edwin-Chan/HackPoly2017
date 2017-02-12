@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Hello world</title>
-    <link type = "text/css" rel = "stylesheet" href = "index.css"/>
+    <title>Chat Room</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font: bold 12px/30px Georgia, serif; }
+        input { border-style: solid; border-color: aqua; padding: 10px; width: 90%; margin-right: .5%; }
+        button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+    </style>
 </head>
 <script src="/socket.io/socket.io.js"></script>
 <script>
-    "use strict";
     var socket = io();
     var user;
     var roomno;
@@ -36,6 +40,7 @@
         document.getElementById('error-container').innerHTML = data;
     });
 
+
     //set current user to username, then change display to chat room
     socket.on('userSet', function(data){
         user = data.username;
@@ -43,11 +48,13 @@
         document.body.innerHTML = '<input type = "text" id = "message">\
         <button type = "button" name = "button" onclick = "sendMessage()">Send</button>\
         <div id = "message-container"></div>';
-        document.head.innerHTML = '<title>' + user + '</title><link type = "text/css" rel = "stylesheet" href = "index.css"/>';
+
+
     });
 
     //gets called when user prompts to send a message; takes message and user who said it, and outputs to server-side
     function sendMessage(){
+
         var msg = document.getElementById('message').value;
         if (msg){
             socket.emit('msg', {message: msg, user: user});
@@ -69,6 +76,13 @@
     socket.on('greetings', function(data){
         document.getElementById('message-container').innerHTML += '<br>' + data;
     });
+
+
+
+
+
+
+
 
 
     /*ROOMS

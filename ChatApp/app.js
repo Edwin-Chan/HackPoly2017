@@ -1,18 +1,26 @@
-"use strict";
-var app = require('express')();
+var express = require('express');
+var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var path = require('path');
+
+var publicPath = path.resolve(__dirname, 'public');
+
+app.use(express.static(publicPath));
 
 app.get('/', function(req, res){
     res.sendfile('index.html');
 });
 
+
+
 var rooms = ['r1', 'r2', 'r3', 'r4', 'r5', 'r6', 'r7', 'r8', 'r9', 'r10'];
 var full = false;
-var users = [];
+users = [];
 io.on('connection', function(socket){
     var currRoom;
     var currName;
+    var assigner;
     console.log('A user connected!');
     //check if user can be added
     socket.on('setUsername', function(data){
@@ -32,7 +40,8 @@ io.on('connection', function(socket){
                 if (users.length == 1){
                     socket.join(rooms[0]);
                     currRoom = rooms[0];
-                    socket.emit('userSet', {username: data, room: rooms[0]});
+                    assigner = 1;
+                    socket.emit('userSet', {username: data, room: rooms[0], assigner: assigner});
                     io.sockets.in(currRoom).emit('greetings', 'Welcome to the chatroom, ' + data + '!');
                     console.log(currName + ' was placed in room ' + currRoom);
                     break;
@@ -40,8 +49,9 @@ io.on('connection', function(socket){
                 socket.join(rooms[i]);
                 if (io.sockets.adapter.rooms[rooms[i]].length == 2){
                     currRoom = rooms[i];
-                    socket.emit('userSet', {username: data, room: rooms[i]});
-                    io.sockets.in(currRoom).emit('greetings', 'Welcome to the chatroom, ' + data + '!');
+                    assigner = 2;
+                    socket.emit('userSet', {username: data, room: rooms[i], assigner: assigner});
+                    io.sockets.in(currRoom).emit('greetings', 'Bot: Welcome to the chatroom, ' + data + '!');
                     console.log(currName + ' was placed in room ' + currRoom);
                     break;
                 }
@@ -55,8 +65,14 @@ io.on('connection', function(socket){
                         socket.join(rooms[randInt]);
                         if (io.sockets.adapter.rooms[rooms[randInt]].length == 2 || io.sockets.adapter.rooms[rooms[randInt]].length == 1){
                             currRoom = rooms[randInt];
-                            socket.emit('userSet', {username: data, room: rooms[randInt]});
-                            io.sockets.in(currRoom).emit('greetings', 'Welcome to the chatroom, ' + data + '!');
+                            if (io.sockets.adapter.rooms[rooms[randInt]].length == 2){
+                                assigner = 2;
+                            }
+                            else {
+                                assigner = 1;
+                            }
+                            socket.emit('userSet', {username: data, room: rooms[randInt], assigner: assigner});
+                            io.sockets.in(currRoom).emit('greetings', 'Bot: Welcome to the chatroom, ' + data + '!');
                             console.log(currName + ' was placed in room ' + currRoom);
                             break;
                         }
