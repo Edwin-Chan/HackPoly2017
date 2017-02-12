@@ -3,10 +3,19 @@
 <head>
     <title>Chat Room</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box;  padding: 0;
+         background: #99ccff;
+          /* Old browsers */
+          background: -moz-linear-gradient(45deg, #cce5ff 10%, #99ccff 50%);
+          /* FF3.6-15 */
+          background: -webkit-linear-gradient(45deg, #cce5ff 10%, #99ccff 50%);
+          /* Chrome10-25,Safari5.1-6 */
+          background: linear-gradient(45deg, #cce5ff 10%, #99ccff 50%);
+        }
         body { font: bold 12px/30px Georgia, serif; }
-        input { border-style: solid; border-color: aqua; padding: 10px; width: 90%; margin-right: .5%; }
-        button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+        input { border-style: solid; border-color: coral; padding: 15px; width: 100%; margin-right: 0.5%; }
+        button { width: 9%; background: rgb(255, 178, 170); border: none; padding: 10px; }
+
     </style>
 </head>
 <script src="/socket.io/socket.io.js"></script>
@@ -129,10 +138,16 @@
         document.body.innerHTML = '';
         document.write(data.description);
     });*/
+    
 </script>
 <body>
     <div id="error-container"></div>
     <input id="name" type = "text" name = "name" value = "" placeholder = "Enter your Username!">
-    <button type = "button" name = "button" onclick="setUsername()"> Let's chat!!!</button>
+    <button type = "button" name = "button" onclick="setUsername()" > Let's chat!!!</button>
+
+
+
+
+
 </body>
 </html>
