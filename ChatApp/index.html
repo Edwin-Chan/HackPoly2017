@@ -64,9 +64,30 @@
 
     //output new message to user
     socket.on('newmsg', function(data){
-        if(user){
-            document.getElementById('message-container').innerHTML += '<div><b>' + data.user + '</b>: ' + data.message + '</div>'
+        if(user)
+        {
+            if (user.user_indicator == 1)
+            {
+            document.getElementById('message-container').innerHTML += '<div id = "user1" ><b>' + data.user + '</b>: ' + data.message + '</div>' ;
+            document.getElementById("user1").style.color = "red"; 
+
+            }   
+            else
+            {
+                document.getElementById('message-container').innerHTML += '<div id = "user2"><b>' + data.user + '</b>: ' + data.message + '</div>';
+                document.getElementById("user2").style.color = "red"; 
+            }
+
         }
+         // else if(user && data.assigner == 2 ){
+         //    
+         // }
+        // else (user){
+        //     document.getElementById('message-container').innerHTML += '<div><b>' + data.user + '</b>: ' + data.message + '</div>';
+        //     //document.getElementById().color = green; 
+        // }
+
+        
     });
 
     socket.on('disconnectedUser', function(data){
