@@ -16,7 +16,13 @@
         if(name){
             socket.emit('setUsername', name);
         }else{
-            document.getElementById('error-container').innerHTML = '<div>Please enter a username</div>';
+            var msg = document.createTextNode("Please enter a username");
+            var div = document.getElementById('error-container');
+            if(div.firstChild){
+                div.replaceChild(msg,div.firstChild);
+            }else{
+                div.insertBefore(msg,null);
+            }
         }
     };
 
