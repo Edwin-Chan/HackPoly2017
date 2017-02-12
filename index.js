@@ -1,8 +1,7 @@
+"use strict";
 
-
-alert("It works");
-
-*/
+console.log(firebase);
+/*
 firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
 	if (error) {
 		var errorCode = error.code;
@@ -14,4 +13,4 @@ firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(e
 	}
 });
 
-/*
+*/

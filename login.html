@@ -1,74 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<title>Login Page</title>
-		<link rel="stylesheet" href="login.css">
-	</head>
-	<body>
-		<h1>Sign Up for an Account</h1>
-		<p>something food happened</p>
-	</body>
+  <head>
+    <meta charset="utf-8">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="login.css">
+  </head>
+  <body>
+    <h1>Sign Up for an Account</h1>
+    <p>something food happened</p>
+  </body>
 
-	<div class="container">
-		<div id="login" class="animate form">
-			<form>
-				<h1>Log In</h1>
-				<p>
-					<label for="username" class="yourusername" data-icon="refresh"> Your username </label>
-					<input id="username" class="yourusername" required="required" type="text" placeholder="your-username"/>
-				</p>
-				<p>
-					<label for="password" class="yourpassword" data-icon="p"> Your password </label>
-					<input id="password" name="password" required="required" type="password" placeholder="password"/>
-				</p>
-				<p class="keeplogin">
-					<input type="checkbox" name="loginkeep" id="loginkeep" value="loginkeep"/>
-					<label for="loginkeep"> Keep me logged in</label>
-				</p>
-				<p class="login button">
-					<input type="submit" value="Submit">
-				</p>
-			</form>
-		</div>
+  <div class="container">
+    <div id="login" class="animate form">
+      <form>
+	<h1>Log In</h1>
+	<p>
+	  <label for="username" class="yourusername" data-icon="refresh"> Your username </label>
+	  <input id="username" class="yourusername" required="required" type="text" placeholder="your-username"/>
+	</p>
+	<p>
+	  <label for="password" class="yourpassword" data-icon="p"> Your password </label>
+	  <input id="password" name="password" required="required" type="password" placeholder="password"/>
+	</p>
+	<p class="keeplogin">
+	  <input type="checkbox" name="loginkeep" id="loginkeep" value="loginkeep"/>
+	  <label for="loginkeep"> Keep me logged in</label>
+	</p>
+	<p class="login button">
+	  <input type="submit" value="Submit">
+	</p>
+      </form>
+    </div>
 
-		<div id="register" class="animate form">
-			<h1>Sign Up</h1>
-			<p>
-				<label for="usernamesignup" class="username" data-icon="u">Your username</label>
-				<input id="usernamesignup" name="usernamesignup" required="required" type="text" placeholder="usernamehere">
-			</p>
-			<p>
-				<label for="emailsignup" class="email" data-icon="e">Your email</label>
-				<input id="emailsignup" name="email" required="required" type="email" placeholder="abc@xyz.com">
-			</p>
-			<p>
-				<label for="passwordsignup" class="password" data-icon="p">Your password</label>
-				<input id="passwordsignup" name="password" required="required" type="password" placeholder="password">
-			</p>
-			<p>
-				<label for="passwordsignupconfirm" class="password" data-icon="p">Please confirm your password</label>
-				<input id="passwordsignupconfirm" name="passwordsignupconfirm" required="required" type="password" placeholder="password">
-			</p>
-			<p class="signinbutton">
-				<input type="submit" value="Sign up"/>
-			</p>
-		</div>
-	</div>
+    <div id="register" class="animate form">
+      <h1>Sign Up</h1>
+      <p>
+	<label for="usernamesignup" class="username" data-icon="u">Your username</label>
+	<input id="usernamesignup" name="usernamesignup" required="required" type="text" placeholder="usernamehere">
+      </p>
+      <p>
+	<label for="emailsignup" class="email" data-icon="e">Your email</label>
+	<input id="emailsignup" name="email" required="required" type="email" placeholder="abc@xyz.com">
+      </p>
+      <p>
+	<label for="passwordsignup" class="password" data-icon="p">Your password</label>
+	<input id="passwordsignup" name="password" required="required" type="password" placeholder="password">
+      </p>
+      <p>
+	<label for="passwordsignupconfirm" class="password" data-icon="p">Please confirm your password</label>
+	<input id="passwordsignupconfirm" name="passwordsignupconfirm" required="required" type="password" placeholder="password">
+      </p>
+      <p class="signinbutton">
+	<input type="submit" value="Sign up"/>
+      </p>
+    </div>
+  </div>
 
-
-
-	<script src="https://www.gstatic.com/firebasejs/3.6.9/firebase.js"></script>
-	<script>
-	  // Initialize Firebase
-	  var config = {
-	    apiKey: "AIzaSyCB3tiz_g08trPqbZae357jJfrIYEsUehM",
-	    authDomain: "culture-app-2dcd0.firebaseapp.com",
-	    databaseURL: "https://culture-app-2dcd0.firebaseio.com",
-	    storageBucket: "culture-app-2dcd0.appspot.com",
-	    messagingSenderId: "837240452372"
-	  };
-	  firebase.initializeApp(config);
-	</script>
+  <script src="https://www.gstatic.com/firebasejs/3.6.9/firebase.js"></script>
+  <script src="/index.js"></script>
 
 </html>
