@@ -58,9 +58,7 @@ io.on('connection', function(socket){
         if (currName){
             users.splice(users.indexOf(currName), 1);
         }
-        if (rooms.length >= 20){
-            full = false;
-        }
+        full = false;
     });
 });
 
