@@ -6,21 +6,61 @@ app.get('/', function(req, res){
     res.sendFile('index.html');
 });
 
+var rooms = ['r1', 'r2', 'r3', 'r4', 'r5', 'r6', 'r7', 'r8', 'r9', 'r10'];
+var full = false;
 users = [];
 io.on('connection', function(socket){
+    var currRoom;
+    var currName;
     console.log('A user connected!');
+    //check if user can be added
     socket.on('setUsername', function(data){
         console.log(data);
         if (users.indexOf(data) > -1){
             socket.emit('userExists', data + ' username is taken!');
         }
+        //error if all rooms are full
+        else if (full == true){
+            socket.emit('fullRooms', 'All rooms are full!');
+        }
         else {
             users.push(data);
-            socket.emit('userSet', {username: data});
+            currName = data;
+            for (var i = 0; i < rooms.length; i++){
+                socket.join(rooms[i]);
+                if (io.sockets.adapter.rooms[rooms[i]].length > 2) {
+                    socket.leave(rooms[i]);
+                }
+                else {
+                    currRoom = rooms[i];
+                    if (io.nsps['/'].adapter.rooms[rooms[i]].length == 2 && i == rooms.length-1){
+                        full = true;
+                    }
+                    console.log(currName + ' was placed in room ' + currRoom);
+                    //output info to html to change its format on client-side
+                    socket.emit('userSet', {username: data, room: rooms[i]});
+                    break;
+                }
+
+            }
         }
     });
+    //when message is asked to be sent, send message to all
     socket.on('msg', function(data){
-        io.sockets.emit('newmsg', data);
+        io.sockets.in(currRoom).emit('newmsg', data);
+    });
+    //disconnect user from chat room, take user out of Users array, set full to false
+    socket.on('disconnect', function(){
+        if (currRoom) {
+            socket.leave(currRoom);
+            io.sockets.in(currRoom).emit('disconnectedUser', 'The other user has left the room...close the page');
+        }
+        if (currName){
+            users.splice(users.indexOf(currName), 1);
+        }
+        if (rooms.length >= 20){
+            full = false;
+        }
     });
 });
 
