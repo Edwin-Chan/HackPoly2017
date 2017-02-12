@@ -34,7 +34,7 @@
     socket.on('userSet', function(data){
         user = data.username;
         roomno = data.room;
-        document.body.innerHTML = '<div id = "greetMsg">Welcome to the chatroom, ' + user + '!</div><input type = "text" id = "message">\
+        document.body.innerHTML = '<input type = "text" id = "message">\
         <button type = "button" name = "button" onclick = "sendMessage()">Send</button>\
         <div id = "message-container"></div>';
         document.head.innerHTML = '<title>' + user + '</title><link type = "text/css" rel = "stylesheet" href = "index.css"/>';
@@ -60,6 +60,9 @@
         document.body.innerHTML = '<div id = "disconnectMessage">Other user has left...please close this tab.</div>';
     });
 
+    socket.on('greetings', function(data){
+        document.getElementById('message-container').innerHTML += '<br>' + data;
+    });
 
 
     /*ROOMS
