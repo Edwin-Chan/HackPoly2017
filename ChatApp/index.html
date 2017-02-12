@@ -6,13 +6,26 @@
 </head>
 <script src="/socket.io/socket.io.js"></script>
 <script>
+    "use strict";
     var socket = io();
-    //Called when current user enteres username; go to server end
-    function setUsername(){
-        socket.emit('setUsername', document.getElementById('name').value);
-    };
     var user;
     var roomno;
+    //Called when current user enteres username; go to server end
+    function setUsername(){
+        var name = document.getElementById('name').value;
+        if(name){
+            socket.emit('setUsername', name);
+        }else{
+            var msg = document.createTextNode("Please enter a username");
+            var div = document.getElementById('error-container');
+            if(div.firstChild){
+                div.replaceChild(msg,div.firstChild);
+            }else{
+                div.insertBefore(msg,null);
+            }
+        }
+    };
+
     //error if user exists already
     socket.on('userExists', function(data){
         document.getElementById('error-container').innerHTML = data;
@@ -23,12 +36,11 @@
         document.getElementById('error-container').innerHTML = data;
     });
 
-
     //set current user to username, then change display to chat room
     socket.on('userSet', function(data){
         user = data.username;
         roomno = data.room;
-        document.body.innerHTML = '<div id = "greetMsg">Welcome to the chatroom, ' + user + '!</div><input type = "text" id = "message">\
+        document.body.innerHTML = '<input type = "text" id = "message">\
         <button type = "button" name = "button" onclick = "sendMessage()">Send</button>\
         <div id = "message-container"></div>';
         document.head.innerHTML = '<title>' + user + '</title><link type = "text/css" rel = "stylesheet" href = "index.css"/>';
@@ -36,7 +48,6 @@
 
     //gets called when user prompts to send a message; takes message and user who said it, and outputs to server-side
     function sendMessage(){
-
         var msg = document.getElementById('message').value;
         if (msg){
             socket.emit('msg', {message: msg, user: user});
@@ -55,13 +66,9 @@
         document.body.innerHTML = '<div id = "disconnectMessage">Other user has left...please close this tab.</div>';
     });
 
-
-
-
-
-
-
-
+    socket.on('greetings', function(data){
+        document.getElementById('message-container').innerHTML += '<br>' + data;
+    });
 
 
     /*ROOMS
