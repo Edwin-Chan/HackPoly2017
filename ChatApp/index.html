@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
-<head><title>Hello world</title></head>
+<head>
+    <title>Hello world</title>
+    <link type = "text/css" rel = "stylesheet" href = "index.css"/>
+</head>
 <script src="/socket.io/socket.io.js"></script>
 <script>
     var socket = io();
@@ -25,9 +28,10 @@
     socket.on('userSet', function(data){
         user = data.username;
         roomno = data.room;
-        document.body.innerHTML = '<input type = "text" id = "message">\
+        document.body.innerHTML = '<div id = "greetMsg">Welcome to the chatroom, ' + user + '!</div><input type = "text" id = "message">\
         <button type = "button" name = "button" onclick = "sendMessage()">Send</button>\
         <div id = "message-container"></div>';
+        document.head.innerHTML = '<title>' + user + '</title><link type = "text/css" rel = "stylesheet" href = "index.css"/>';
     });
 
     //gets called when user prompts to send a message; takes message and user who said it, and outputs to server-side
@@ -37,6 +41,7 @@
         if (msg){
             socket.emit('msg', {message: msg, user: user});
         }
+        document.getElementById('message').value = "";
     }
 
     //output new message to user
@@ -47,8 +52,7 @@
     });
 
     socket.on('disconnectedUser', function(data){
-        document.body.innerHTML = '';
-        document.write(data);
+        document.body.innerHTML = '<div id = "disconnectMessage">Other user has left...please close this tab.</div>';
     });
 
 

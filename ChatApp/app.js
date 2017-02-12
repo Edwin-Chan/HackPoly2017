@@ -3,7 +3,7 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
 app.get('/', function(req, res){
-    res.sendFile('index.html');
+    res.sendfile('index.html');
 });
 
 var rooms = ['r1', 'r2', 'r3', 'r4', 'r5', 'r6', 'r7', 'r8', 'r9', 'r10'];
@@ -15,7 +15,6 @@ io.on('connection', function(socket){
     console.log('A user connected!');
     //check if user can be added
     socket.on('setUsername', function(data){
-        console.log(data);
         if (users.indexOf(data) > -1){
             socket.emit('userExists', data + ' username is taken!');
         }
@@ -27,6 +26,7 @@ io.on('connection', function(socket){
             users.push(data);
             currName = data;
             for (var i = 0; i < rooms.length; i++){
+                //must join at first in case room hasn't been initialized yet
                 socket.join(rooms[i]);
                 if (io.sockets.adapter.rooms[rooms[i]].length > 2) {
                     socket.leave(rooms[i]);
@@ -39,6 +39,7 @@ io.on('connection', function(socket){
                     console.log(currName + ' was placed in room ' + currRoom);
                     //output info to html to change its format on client-side
                     socket.emit('userSet', {username: data, room: rooms[i]});
+                    io.sockets.in(currRoom).emit('greetings', 'Welcome to the chatroom, ' + data + '!');
                     break;
                 }
 
