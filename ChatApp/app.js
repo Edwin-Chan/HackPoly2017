@@ -25,8 +25,68 @@ io.on('connection', function(socket){
         }
         else {
             users.push(data);
+            console.log('There are ' + users.length + ' users right now');
             currName = data;
+            //check for rooms with one person
             for (var i = 0; i < rooms.length; i++){
+                if (users.length == 1){
+                    socket.join(rooms[0]);
+                    currRoom = rooms[0];
+                    socket.emit('userSet', {username: data, room: rooms[0]});
+                    io.sockets.in(currRoom).emit('greetings', 'Welcome to the chatroom, ' + data + '!');
+                    console.log(currName + ' was placed in room ' + currRoom);
+                    break;
+                }
+                socket.join(rooms[i]);
+                if (io.sockets.adapter.rooms[rooms[i]].length == 2){
+                    currRoom = rooms[i];
+                    socket.emit('userSet', {username: data, room: rooms[i]});
+                    io.sockets.in(currRoom).emit('greetings', 'Welcome to the chatroom, ' + data + '!');
+                    console.log(currName + ' was placed in room ' + currRoom);
+                    break;
+                }
+                else {
+                    socket.leave(rooms[i]);
+                }
+                //randomly assign to a chatroom
+                if (i == rooms.length - 1){
+                    while (1){
+                        var randInt = Math.floor(Math.random() * (9 - 0 + 1) + 0);
+                        socket.join(rooms[randInt]);
+                        if (io.sockets.adapter.rooms[rooms[randInt]].length == 2 || io.sockets.adapter.rooms[rooms[randInt]].length == 1){
+                            currRoom = rooms[randInt];
+                            socket.emit('userSet', {username: data, room: rooms[randInt]});
+                            io.sockets.in(currRoom).emit('greetings', 'Welcome to the chatroom, ' + data + '!');
+                            console.log(currName + ' was placed in room ' + currRoom);
+                            break;
+                        }
+                        else {
+                            socket.leave(rooms[randInt]);
+                        }
+
+                    }
+                }
+            }
+            //check if list is full
+            for (var i = 0; i < rooms.length; i++){
+                socket.join(rooms[i]);
+                if (io.sockets.adapter.rooms[rooms[i]].length == 1 || io.sockets.adapter.rooms[rooms[i]].length == 2){
+                    full = false;
+                    socket.leave(rooms[i]);
+                    break;
+                }
+                else if (io.sockets.adapter.rooms[rooms[i]].length == 3 && i == rooms.length - 1){
+                    full = true;
+                    socket.leave(rooms[i]);
+                    break;
+                }
+                else {
+                    socket.leave(rooms[i]);
+                }
+            }
+            //randomly get paired with someone else in another chatroom
+
+            /*for (var i = 0; i < rooms.length; i++){
                 //must join at first in case room hasn't been initialized yet
                 socket.join(rooms[i]);
                 if (io.sockets.adapter.rooms[rooms[i]].length > 2) {
@@ -44,7 +104,7 @@ io.on('connection', function(socket){
                     break;
                 }
 
-            }
+            }*/
         }
     });
     //when message is asked to be sent, send message to all
@@ -61,6 +121,7 @@ io.on('connection', function(socket){
             users.splice(users.indexOf(currName), 1);
         }
         full = false;
+        console.log('A user disconnected...' + users.length + ' users remaining!');
     });
 });
 
